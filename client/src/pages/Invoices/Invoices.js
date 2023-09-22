@@ -14,7 +14,7 @@ import Container from "react-bootstrap/esm/Container";
 function Invoices() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchProduct, setSearchProduct] = useState("");
+  const [searchProduct, setSearchProduct] = useState([]);
   const { credentials, isLoggedIn } = useSelector((state) => state.users);
   const { invoicesList, isSuccess, isLoading, isError, message } = useSelector(
     (state) => state.invoices
@@ -47,7 +47,7 @@ function Invoices() {
               type="search"
               name="searchProduct"
               value={searchProduct}
-              onChange={(e) => setSearchProduct(e.target.value)}
+              onChange={(e) => setSearchProduct([e.target.value])}
             />
             <Button type="button" onClick={searchByProductsBtn}>
               Search

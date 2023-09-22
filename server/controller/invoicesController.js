@@ -38,8 +38,8 @@ const searchInvoice = async (request, response) => {
       products: { $in: name },
       customerId: userId,
     });
-    console.log(userId);
-    // response.json(data);
+    console.log(data);
+    response.json(data);
   } catch (error) {
     console.error(error);
     response.status(500).json({

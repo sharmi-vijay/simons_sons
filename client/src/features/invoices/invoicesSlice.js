@@ -47,7 +47,7 @@ export const getAllInvoices = createAsyncThunk(
         {
           headers: {
             "Auth-Token": token,
-            "customerId": customerId,
+            customerId: customerId,
           },
         }
       );
@@ -63,17 +63,19 @@ export const searchInvoices = createAsyncThunk(
   "invoices/search",
   async (Data, thunkAPI) => {
     try {
-    console.log(Data);
+      console.log(Data.productName, token);
       const response = await axios.get(
-        "http://localhost:5000/api/invoices/search",Data.productName,
+        "http://localhost:5000/api/invoices/search",
+        Data.productName,
         {
           headers: {
             "Auth-Token": token,
-            "customerId": Data.customerId,
+            customerId: Data.customerId,
           },
         }
       );
-      return thunkAPI.fulfillWithValue(response.data);
+      console.log(response.data);
+      // return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -124,7 +126,7 @@ export const invoicesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder 
+    builder
       // Create invoice record
       .addCase(createInvoice.pending, (state) => {
         state.isLoading = true;
@@ -188,6 +190,6 @@ export const invoicesSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 // Changes
-export const { addToCart, removeFromCart,reset } = invoicesSlice.actions;
+export const { addToCart, removeFromCart, reset } = invoicesSlice.actions;
 
 export default invoicesSlice.reducer;
