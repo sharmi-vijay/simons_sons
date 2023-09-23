@@ -15,6 +15,7 @@ import ProductList from "../../../components/ProductList/ProductList";
 
 function AddProducts() {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.users.credentials.token)
   const { singleProduct, isUpdate } = useSelector((state) => state.products);
 
   // Changes
@@ -51,18 +52,18 @@ function AddProducts() {
   };
 
   useEffect(() => {
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(token));
   }, []);
 
   const addProductBtn = () => {
     dispatch(addProduct(product));
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(token));
     setProduct(obj);
   };
   // Changes
   const updateProductBtn = () => {
     dispatch(updateProduct(product));
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(token));
     setProduct(obj);
   };
 

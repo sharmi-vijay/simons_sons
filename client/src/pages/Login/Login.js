@@ -32,7 +32,7 @@ function Login() {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/shop");
+      navigate("/");
     }
     
     if (isError) {

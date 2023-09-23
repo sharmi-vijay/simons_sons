@@ -15,6 +15,7 @@ function ProductList(props) {
   // PRODUCT LISTING
   const { accessFrom, category } = props;
   const products = useSelector((state) => state.products.productList);
+  const token = useSelector((state) => state.users.credentials.token)
 
   const filteredProducts = products && products.filter((product) => {
     if (category == "All") {
@@ -25,13 +26,13 @@ function ProductList(props) {
   });
 
   useEffect(() => {
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(token));
   }, []);
 
   // ------------------ ADMIN BUTTONS ------------------
   const deleteProductBtn = (id) => {
     dispatch(deleteProduct(id));
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(token));
   };
   const updateProductBtn = (data) => {
     dispatch(setDatatoForm(data));

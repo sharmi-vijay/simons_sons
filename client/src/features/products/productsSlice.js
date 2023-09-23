@@ -13,7 +13,7 @@ const initialState = {
 };
 
 // JWT Token
-const token = localStorage.getItem("credentials")
+const token = localStorage.getItem("credentials") 
   ? JSON.parse(localStorage.getItem("credentials")).token
   : "";
 
@@ -41,13 +41,13 @@ export const addProduct = createAsyncThunk(
 // READ
 export const getAllProducts = createAsyncThunk(
   "products/getall",
-  async (_, thunkAPI) => {
+  async (jwtToken, thunkAPI) => {
     try {
       const response = await axios.get(
         "http://localhost:5000/api/products/getall",
         {
           headers: {
-            "Auth-Token": token,
+            "Auth-Token": jwtToken,
           },
         }
       );

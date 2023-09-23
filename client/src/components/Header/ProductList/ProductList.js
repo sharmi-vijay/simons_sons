@@ -11,14 +11,15 @@ import {
 function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.productList);
+  const token = useSelector((state) => state.users.credentials.token)
 
   useEffect(() => {
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(token));
   }, [products]);
 
   const deleteProductBtn = (id) => {
     dispatch(deleteProduct(id));
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(token));
   };
 
   const updateProductBtn = (data) => {
