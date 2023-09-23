@@ -63,14 +63,13 @@ export const searchInvoices = createAsyncThunk(
   "invoices/search",
   async (Data, thunkAPI) => {
     try {
-      console.log(Data.productName, token);
+      console.log(Data.productName);
       const response = await axios.get(
         "http://localhost:5000/api/invoices/search",
-        Data.productName,
+        Data,
         {
           headers: {
-            "Auth-Token": token,
-            customerId: Data.customerId,
+            "Auth-Token": token
           },
         }
       );
