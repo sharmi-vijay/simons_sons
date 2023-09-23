@@ -7,6 +7,7 @@ const initialState = {
   totalCost: 0,
   isLoading: false,
   isSuccess: false,
+  isDelSuccess: false,
   isError: false,
   message: "",
 };
@@ -189,19 +190,21 @@ export const invoicesSlice = createSlice({
       // Delete invoice record
       .addCase(deleteInvoice.pending, (state) => {
         state.isLoading = true;
+        state.isDelSuccess = false;
         state.isSuccess = false;
         state.isError = false;
         state.message = "";
       })
       .addCase(deleteInvoice.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
+        state.isDelSuccess = true;
         state.isError = false;
         state.message = "Invoice record deleted successfully!";
       })
       .addCase(deleteInvoice.rejected, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = false;
+        state.isDelSuccess = false;
+         state.isSuccess = false;
         state.isError = true;
         state.message = "Invoice record deletion failed";
       });

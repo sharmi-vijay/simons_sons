@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllInvoices,
   searchInvoices,
-  reset
+  reset,
+  deleteInvoice,
 } from "../../features/invoices/invoicesSlice";
 import Button from "react-bootstrap/esm/Button";
 import { logOut } from "../../features/users/usersSlice";
@@ -16,15 +17,23 @@ function Invoices() {
   const navigate = useNavigate();
   const [searchProduct, setSearchProduct] = useState("");
   const { credentials, isLoggedIn } = useSelector((state) => state.users);
-  const { invoicesList, isSuccess, isLoading, isError, message } = useSelector(
+  const { invoicesList,isDelSuccess, isSuccess, isLoading, isError, message } = useSelector(
     (state) => state.invoices
   );
 
   const searchByProductsBtn = () => {
-    dispatch(
-      searchInvoices({ customerId: credentials.id, productName: searchProduct })
-    );
-    dispatch(reset())
+    if(searchProduct === "") {
+      dispatch(getAllInvoices(credentials.id));
+    } else {
+      dispatch(
+        searchInvoices({ customerId: credentials.id, productName: searchProduct })
+      );
+      dispatch(reset());
+    }
+  };
+
+  const deleteInvoiceBtn = (id) => {
+    dispatch(deleteInvoice(id));
   };
 
   useEffect(() => {
@@ -37,6 +46,13 @@ function Invoices() {
   useEffect(() => {
     dispatch(getAllInvoices(credentials.id));
   }, [dispatch]);
+
+  useEffect(()=>{
+    if(isDelSuccess) {
+      dispatch(getAllInvoices(credentials.id));
+    }
+  },[dispatch,isDelSuccess])
+
   return (
     <>
       <Container fluid className="mt-2">
@@ -66,6 +82,7 @@ function Invoices() {
               <th>Delivery Date</th>
               <th>Total Cost ($)</th>
               <th>Street Address</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -88,6 +105,11 @@ function Invoices() {
                       <td>{data.deliveryDate}</td>
                       <td>{data.totalCost}</td>
                       <td>{data.address}</td>
+                      <td>
+                        <Button variant="danger" size="sm" onClick={() => deleteInvoiceBtn(data._id)}>
+                          Del.
+                        </Button>
+                      </td>
                     </tr>
                   ))
                 ) : (
