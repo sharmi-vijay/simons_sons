@@ -19,7 +19,8 @@ npm install
 cd client
 npm install
 ```
-5. Starting app - start the backend server:
+## Starting App
+5. Start the backend developement server:
 ```console
 cd server
 npm start
