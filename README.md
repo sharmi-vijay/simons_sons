@@ -1,6 +1,6 @@
 # Tek-Electronics - MERN app
 
-# App Installation
+# Initializing App
 1. Clone the repository:
 ```console
 git clone https://github.com/hamzaaacodes/tek-electronics.git
@@ -9,6 +9,7 @@ git clone https://github.com/hamzaaacodes/tek-electronics.git
 ```console
 cd tek-electronics
 ```
+## Installing dependencies
 3. Install backend dependencies:
 ```console
 cd server
