@@ -57,5 +57,5 @@ npm start
 16. You can check your Invoices on "Invoices" page.
 17. You can also delete the Invoices records records.
 ## Search Invoices with Product Name
-17. From the Search tab on "Invoices" page you can Search Invoices by Product Names.
+18. From the Search tab on "Invoices" page you can Search Invoices by Product Names.
 
