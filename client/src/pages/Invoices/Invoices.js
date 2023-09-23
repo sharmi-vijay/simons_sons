@@ -42,7 +42,7 @@ function Invoices() {
       <Container fluid className="mt-2">
         <div className="d-flex align-items-center justify-content-between">
           <h2>Invoices</h2>
-          <span>
+          <span className="d-flex gap-3">
             <input
               type="search"
               name="searchProduct"
@@ -59,13 +59,13 @@ function Invoices() {
             <tr>
               <th>#</th>
               <th>Products</th>
-              <th>customerName</th>
-              <th>customerId</th>
-              <th>email</th>
-              <th>date</th>
-              <th>deliveryDate</th>
-              <th>totalCost</th>
-              <th>address</th>
+              <th>Customer Name</th>
+              <th>Phone #</th>
+              <th>Email</th>
+              <th>Date</th>
+              <th>Delivery Date</th>
+              <th>Total Cost ($)</th>
+              <th>Street Address</th>
             </tr>
           </thead>
           <tbody>
@@ -82,7 +82,7 @@ function Invoices() {
                       <td>{i + 1}</td>
                       <td>{data.products.map((pData) => pData).join(",")}</td>
                       <td>{data.customerName}</td>
-                      <td>{data.customerId}</td>
+                      <td>{data.phone}</td>
                       <td>{data.email}</td>
                       <td>{data.date}</td>
                       <td>{data.deliveryDate}</td>

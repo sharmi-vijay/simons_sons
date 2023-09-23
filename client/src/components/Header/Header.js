@@ -17,8 +17,12 @@ function Header() {
       <Container fluid>
         <div className="d-flex gap-3">
           <NavLink to={"/"}>Tek-Electronics</NavLink>
-          <NavLink to={"/shop"}>Shop Now</NavLink>
-          {isLoggedIn ? <NavLink to={"/invoices"}>Invoices</NavLink> : null}
+          {isLoggedIn ? (
+            <>
+              <NavLink to={"/shop"}>Shop Now</NavLink>
+              <NavLink to={"/invoices"}>Invoices</NavLink>
+            </>
+          ) : null}
         </div>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
