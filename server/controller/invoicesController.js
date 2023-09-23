@@ -31,14 +31,13 @@ const deleteInvoice = async (request, response) => {
 // SEARCH
 const searchInvoice = async (request, response) => {
   const userId = request.header("customerId");
-  const { name } = request.body;
+  const { productName } = request.body;
   
   try {
     const data = await invoicesModel.find({
-      products: { $in: name },
+      products: { $in: productName },
       customerId: userId,
     });
-    console.log(data);
     response.json(data);
   } catch (error) {
     console.error(error);

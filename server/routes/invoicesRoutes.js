@@ -5,6 +5,6 @@ const {createInvoice, getAllInvoices, deleteInvoice, searchInvoice} = require('.
 router.route('/add').post(createInvoice);
 router.route('/getall').get(getAllInvoices);
 router.route('/delete/:id').delete(deleteInvoice);
-router.route('/search').get(searchInvoice);
+router.route('/search').post(searchInvoice);
 
 module.exports = router;

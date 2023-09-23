@@ -6,7 +6,13 @@ import Container from "react-bootstrap/esm/Container";
 
 function Home() {
   const navigate = useNavigate();
-  const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
+  const user = useSelector((state) => state.users.isLoggedIn);
+
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate("/login");
+  //   }
+  // }, [user]);
 
   return (
     <>
@@ -62,14 +68,7 @@ function Home() {
           the difference when you choose Tek-Electronics as your trusted online
           destination for all things electronic accessories.
         </p>
-        <Button
-          onClick={() => {
-            isLoggedIn ? navigate("/shop") : navigate("/login");
-          }}
-          type="button"
-        >
-          Let's Explore!
-        </Button>
+        <Button onClick={()=> navigate("/shop")} type="button">Let's Explore!</Button>
       </Container>
     </>
   );
