@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function Admin() {
 
   const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
 
   const admin = {
     username: "humantek",
@@ -40,6 +42,12 @@ function Admin() {
       toast.error("Wrong credentials")
     }
   };
+
+  useEffect(()=> {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [])
   return (
     <>
       <Container>

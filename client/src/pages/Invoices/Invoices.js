@@ -40,13 +40,6 @@ function Invoices() {
   };
 
   useEffect(() => {
-    if (credentials === "" || !isLoggedIn) {
-      dispatch(logOut());
-      navigate("/");
-    }
-  }, [credentials, isLoggedIn, dispatch, navigate]);
-
-  useEffect(() => {
     dispatch(getAllInvoices(credentials));
   }, [dispatch]);
 
@@ -56,6 +49,12 @@ function Invoices() {
       dispatch(getAllInvoices(credentials));
     }
   }, [dispatch, isDelSuccess]);
+
+  useEffect(()=> {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [])
 
   return (
     <>

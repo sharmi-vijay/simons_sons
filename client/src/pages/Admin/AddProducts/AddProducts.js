@@ -63,13 +63,15 @@ function AddProducts() {
     dispatch(getAllProducts(token));
   }, []);
 
-  const addProductBtn = () => {
+  const addProductBtn = (e) => {
+    e.preventDefault();
     dispatch(addProduct(product));
     dispatch(getAllProducts(token));
     setProduct(productTemplate);
   };
 
-  const updateProductBtn = () => {
+  const updateProductBtn = (e) => {
+    e.preventDefault();
     dispatch(updateProduct(product));
     dispatch(getAllProducts(token));
     setProduct(productTemplate);
@@ -106,7 +108,7 @@ function AddProducts() {
             </Button>
           </div>
         </div>
-        <Form>
+        <Form onSubmit={isUpdate ? updateProductBtn : addProductBtn}>
           <Row>
             <Col md={4}>
               <Form.Group as={Col} className="mb-3" controlId="formBasicEmail">
@@ -116,6 +118,7 @@ function AddProducts() {
                   value={product.name}
                   onChange={handleChange}
                   placeholder="Name"
+                  required
                 />
               </Form.Group>
 
@@ -130,6 +133,7 @@ function AddProducts() {
                   value={product.brand}
                   onChange={handleChange}
                   placeholder="Brand"
+                  required
                 />
               </Form.Group>
 
@@ -144,6 +148,7 @@ function AddProducts() {
                   value={product.price}
                   onChange={handleChange}
                   placeholder="Price ($)"
+                  required
                 />
               </Form.Group>
 
@@ -158,7 +163,7 @@ function AddProducts() {
                   onChange={handleChange}
                   aria-label="Default select example"
                 >
-                  <option>Category</option>
+                  <option hidden>Category</option>
                   {productsCategory.map((category, id) => (
                     <option key={id} value={category}>
                       {category}
@@ -205,12 +210,7 @@ function AddProducts() {
               </figure>
             </Col>
           </Row>
-          {/* Changes */}
-          <Button
-            variant="primary"
-            type="button"
-            onClick={isUpdate ? updateProductBtn : addProductBtn}
-          >
+          <Button variant="primary" type="submit">
             {isUpdate ? "Update" : "Add"} Product
           </Button>
         </Form>

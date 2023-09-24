@@ -12,6 +12,7 @@ import AddProducts from "./pages/Admin/AddProducts/AddProducts";
 import { ToastContainer } from "react-toastify";
 import Shop from "./pages/Shop/Shop";
 import Invoices from "./pages/Invoices/Invoices";
+import NoPage from "./pages/NoPage/NoPage";
 
 function App() {
   const user = useSelector((state) => state.users.isLoggedIn);
@@ -26,6 +27,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="shop" element={<Shop />} />
           <Route path="invoices" element={<Invoices />} />
+          <Route path="*" element={<NoPage />} />
         </Route>
         <Route path="/admin">
           <Route index element={<Admin />} />
