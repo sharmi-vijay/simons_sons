@@ -4,22 +4,28 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Logo from "../../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { logOut } from "../../features/users/usersSlice";
 
 function Header() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.users);
 
   return (
-    <Navbar expand="lg" style={{fontWeight: "bold"}} className="bg-body-tertiary py-0 fs-6">
+    <Navbar
+      expand="lg"
+      style={{ fontWeight: "bold" }}
+      className="bg-body-tertiary py-0 fs-6"
+    >
       <Container fluid>
         <div className="d-flex gap-3 align-items-center">
           <NavLink to={"/"}>
-            <img src={Logo } style={{height: "80px"}} alt="Tek-Electronics" />
+            <img src={Logo} style={{ height: "80px" }} alt="Tek-Electronics" />
           </NavLink>
-          {isLoggedIn ? (
+          {isLoggedIn &&
+          !(location.pathname.indexOf("/admin/addproducts") !== -1) ? (
             <>
               <NavLink to={"/shop"}>Shop</NavLink>
               <NavLink to={"/invoices"}>Your Invoices</NavLink>
@@ -51,13 +57,28 @@ function Header() {
               </>
             ) : (
               <>
-                <NavLink to={"/admin"}>Admin Panel</NavLink>
+                {isLoggedIn &&
+                !(location.pathname.indexOf("/admin/addproducts") !== -1) ? (
+                  <NavLink to={"/admin"}>Admin Panel</NavLink>
+                ) : null}
+
                 <Nav.Link
                   onClick={() => {
-                    navigate("/login");
-                    dispatch(logOut());
+                    if (
+                      location.pathname.indexOf("/admin/addproducts") !== -1
+                    ) {
+                      navigate("/admin");
+                      localStorage.removeItem("adminLogin");
+                    } else {
+                      navigate("/login");
+                      dispatch(logOut());
+                    }
                   }}
-                  title="Log-out"
+                  title={
+                    location.pathname.indexOf("/admin/addproducts") !== -1
+                      ? "Admin Log-out"
+                      : "Log-out"
+                  }
                 >
                   <i className="fa-solid fa-right-from-bracket fa-xl" />
                 </Nav.Link>

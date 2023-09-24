@@ -93,21 +93,7 @@ function AddProducts() {
   return (
     <>
       <Container>
-        <div className="d-flex justify-content-between my-4">
-          <h1> {isUpdate ? "Update" : "Add"} Product</h1>
-          <div>
-            <Button
-              variant="success"
-              size="md"
-              onClick={() => {
-                navigate("/admin");
-                localStorage.removeItem("adminLogin");
-              }}
-            >
-              Log Out
-            </Button>
-          </div>
-        </div>
+        <h1 className="my-4"> {isUpdate ? "Update" : "Add"} Product</h1>
         <Form onSubmit={isUpdate ? updateProductBtn : addProductBtn}>
           <Row>
             <Col md={4}>
