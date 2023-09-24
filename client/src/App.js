@@ -1,5 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home/Home";
@@ -8,6 +9,7 @@ import Admin from "./pages/Admin/Admin";
 import Register from "./pages/Register/Register";
 import { useSelector } from "react-redux";
 import AddProducts from "./pages/Admin/AddProducts/AddProducts";
+import { ToastContainer } from "react-toastify";
 import Shop from "./pages/Shop/Shop";
 import Invoices from "./pages/Invoices/Invoices";
 
@@ -30,6 +32,7 @@ function App() {
           <Route path="addproducts" element={<AddProducts />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </>
   );
 }

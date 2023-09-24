@@ -4,7 +4,8 @@ import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/esm/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../../features/users/usersSlice";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Register() {
   const dispatch = useDispatch();
@@ -37,9 +38,10 @@ function Register() {
         password: user.password,
       };
       dispatch(signUp(finalUser));
+      toast.success("User Signup Successfully!")
       setUser(userTemplate);
     } else {
-      alert("Password does not match!");
+      toast.error("Password does not match!")
     }
   };
 

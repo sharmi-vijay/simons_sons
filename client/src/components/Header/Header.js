@@ -34,9 +34,9 @@ function Header() {
           <Form className="d-flex gap-3">
             {!isLoggedIn ? (
               <>
-                <NavLink to={"/login"} title="Log-in">
+                <Nav.Link onClick={()=> {dispatch(logOut()); navigate("/login")}} title="Log-in" >
                   <i className="fa-solid fa-right-to-bracket fa-xl" />
-                </NavLink>
+                </Nav.Link>
                 <NavLink to={"/signup"} title="Sign-up">
                   <i className="fa-solid fa-user-plus fa-xl" />
                 </NavLink>

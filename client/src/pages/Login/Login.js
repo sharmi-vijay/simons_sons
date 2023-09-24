@@ -4,8 +4,9 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import { useDispatch, useSelector } from "react-redux";
-import { logIn } from "../../features/users/usersSlice";
+import { logIn, logOut } from "../../features/users/usersSlice";
 import { NavLink, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Login() {
   const dispatch = useDispatch();
@@ -33,11 +34,12 @@ function Login() {
   useEffect(() => {
     if (isSuccess) {
       navigate("/");
+      toast.success("Login Successfully!")
     }
     
     if (isError) {
       navigate("/");
-      // toast.error(message);
+      toast.error(message);
     }
   }, [isSuccess, isError, message]);
 

@@ -57,7 +57,8 @@ export const usersSlice = createSlice({
       localStorage.clear();
       state.credentials = {};
       state.isSuccess = false;
-      state.isLoggedIn = null;
+      state.isError = false;
+      state.isLoggedIn = false;
     },
   },
   extraReducers: (builder) => {
@@ -90,17 +91,23 @@ export const usersSlice = createSlice({
       })
       .addCase(logIn.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.message = "Successfully logged in!";
-        state.credentials = action.payload;
-        state.isLoggedIn = action.payload.success;
-        // Local storage
-        localStorage.setItem("credentials", JSON.stringify(action.payload));
-        localStorage.setItem(
-          "isLoggedIn",
-          JSON.stringify(action.payload.success)
-        );
+        state.message = action.payload;
+        if (state.message === "Invalid credentials") {
+          state.credentials = "";
+          state.isLoggedIn = false;
+          state.isError = true;
+        } else {
+          state.isSuccess = true;
+          state.message = "Successfully logged in!";
+          state.credentials = action.payload;
+          state.isLoggedIn = action.payload.success;
+          // Local storage
+          localStorage.setItem("credentials", JSON.stringify(action.payload));
+          localStorage.setItem(
+            "isLoggedIn",
+            JSON.stringify(action.payload.success)
+          );
+        }
       })
       .addCase(logIn.rejected, (state, action) => {
         state.isLoading = false;

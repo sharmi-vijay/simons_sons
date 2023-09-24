@@ -5,10 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import Container from "react-bootstrap/esm/Container";
-import { createInvoice } from "../../features/invoices/invoicesSlice";
+import {
+  createInvoice,
+  removeAllFromCart,
+} from "../../features/invoices/invoicesSlice";
+import { toast } from "react-toastify";
 
 function Cart() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -50,8 +54,14 @@ function Cart() {
       totalCost: totalCost,
     };
 
-    dispatch(createInvoice(invoiceData))
-    console.log(invoiceData);
+    if (invoiceData.products.length === 0) {
+      toast.error("Cart is Emtpy!");
+    } else {
+      dispatch(createInvoice(invoiceData));
+      dispatch(removeAllFromCart());
+      toast.success("Product Added Successfully!");
+    }
+    handleClose();
   };
 
   return (
@@ -114,9 +124,9 @@ function Cart() {
             </Row>
             <Row className="mt-4">
               <div>
-              <Button type="button" onClick={() => generateInvoice()}>
-                Generate Invoice
-              </Button>
+                <Button type="button" onClick={() => generateInvoice()}>
+                  Generate Invoice
+                </Button>
               </div>
             </Row>
           </Container>

@@ -11,22 +11,25 @@ import Button from "react-bootstrap/esm/Button";
 import { logOut } from "../../features/users/usersSlice";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/esm/Container";
+import { toast } from "react-toastify";
 
 function Invoices() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchProduct, setSearchProduct] = useState("");
   const { credentials, isLoggedIn } = useSelector((state) => state.users);
-  const { invoicesList,isDelSuccess, isSuccess, isLoading, isError, message } = useSelector(
-    (state) => state.invoices
-  );
+  const { invoicesList, isDelSuccess, isSuccess, isLoading, isError, message } =
+    useSelector((state) => state.invoices);
 
   const searchByProductsBtn = () => {
-    if(searchProduct === "") {
-      dispatch(getAllInvoices(credentials.id));
+    if (searchProduct === "") {
+      dispatch(getAllInvoices(credentials));
     } else {
       dispatch(
-        searchInvoices({ customerId: credentials.id, productName: searchProduct })
+        searchInvoices({
+          customerId: credentials.id,
+          productName: searchProduct,
+        })
       );
       dispatch(reset());
     }
@@ -44,14 +47,15 @@ function Invoices() {
   }, [credentials, isLoggedIn, dispatch, navigate]);
 
   useEffect(() => {
-    dispatch(getAllInvoices(credentials.id));
+    dispatch(getAllInvoices(credentials));
   }, [dispatch]);
 
-  useEffect(()=>{
-    if(isDelSuccess) {
-      dispatch(getAllInvoices(credentials.id));
+  useEffect(() => {
+    if (isDelSuccess) {
+      toast.success("Invoice record deleted successfully!");
+      dispatch(getAllInvoices(credentials));
     }
-  },[dispatch,isDelSuccess])
+  }, [dispatch, isDelSuccess]);
 
   return (
     <>
@@ -106,7 +110,11 @@ function Invoices() {
                       <td>{data.totalCost}</td>
                       <td>{data.address}</td>
                       <td>
-                        <Button variant="danger" size="sm" onClick={() => deleteInvoiceBtn(data._id)}>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => deleteInvoiceBtn(data._id)}
+                        >
                           Del.
                         </Button>
                       </td>

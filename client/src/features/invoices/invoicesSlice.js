@@ -41,14 +41,14 @@ export const createInvoice = createAsyncThunk(
 // READ
 export const getAllInvoices = createAsyncThunk(
   "invoices/getall",
-  async (customerId, thunkAPI) => {
+  async (credentials, thunkAPI) => {
     try {
       const response = await axios.get(
         "http://localhost:5000/api/invoices/getall",
         {
           headers: {
-            "Auth-Token": token,
-            "customerId": customerId,
+            "Auth-Token": credentials.token,
+            customerId: credentials.id,
           },
         }
       );
@@ -64,16 +64,16 @@ export const searchInvoices = createAsyncThunk(
   "invoices/search",
   async (Data, thunkAPI) => {
     try {
-    // console.log(Data);
+      // console.log(Data);
       const response = await axios.post(
         "http://localhost:5000/api/invoices/search",
         Data,
         {
           headers: {
             "Auth-Token": token,
-            "customerId": Data.customerId,
-          }
-        },
+            customerId: Data.customerId,
+          },
+        }
       );
       console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
@@ -125,13 +125,18 @@ export const invoicesSlice = createSlice({
       state.totalCost -= Number(cost);
       state.productsCart.splice(name, 1);
     },
+    removeAllFromCart: (state) => {
+      state.totalCost = 0;
+      state.productsCart = [];
+    },
   },
   extraReducers: (builder) => {
-    builder 
+    builder
       // Create invoice record
       .addCase(createInvoice.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
+        state.isDelSuccess = false;
         state.isError = false;
         state.message = "";
       })
@@ -151,6 +156,7 @@ export const invoicesSlice = createSlice({
       .addCase(getAllInvoices.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
+        state.isDelSuccess = false;
         state.isError = false;
         state.message = "";
       })
@@ -171,6 +177,7 @@ export const invoicesSlice = createSlice({
       .addCase(searchInvoices.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
+        state.isDelSuccess = false;
         state.isError = false;
         state.message = "";
       })
@@ -204,7 +211,7 @@ export const invoicesSlice = createSlice({
       .addCase(deleteInvoice.rejected, (state, action) => {
         state.isLoading = false;
         state.isDelSuccess = false;
-         state.isSuccess = false;
+        state.isSuccess = false;
         state.isError = true;
         state.message = "Invoice record deletion failed";
       });
@@ -213,6 +220,7 @@ export const invoicesSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 // Changes
-export const { addToCart, removeFromCart,reset } = invoicesSlice.actions;
+export const { addToCart, removeFromCart, removeAllFromCart, reset } =
+  invoicesSlice.actions;
 
 export default invoicesSlice.reducer;

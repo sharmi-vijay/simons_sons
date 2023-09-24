@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Admin() {
 
@@ -14,14 +15,14 @@ function Admin() {
     password: "humantek",
   };
 
-  const [credentials, useCredentials] = useState({
+  const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    useCredentials({
+    setCredentials({
       ...credentials,
       [name]: value,
     });
@@ -34,8 +35,9 @@ function Admin() {
     ) {
       localStorage.setItem("adminLogin", JSON.stringify(true));
       navigate("/admin/addproducts")
+      toast.success("Wellcome Admin")
     } else {
-      alert("Wrong credentials")
+      toast.error("Wrong credentials")
     }
   };
   return (

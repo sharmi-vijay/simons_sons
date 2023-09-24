@@ -27,11 +27,11 @@ function Shop() {
           <Tab eventKey="Mobiles" title="Mobiles">
             <ProductList accessFrom="shop" category="Mobile" />
           </Tab>
-          <Tab eventKey="Computers" title="Computers">
-            <ProductList accessFrom="shop" category="Computer" />
+          <Tab eventKey="Laptops & Computers" title="Laptops & Computers">
+            <ProductList accessFrom="shop" category="Laptops & Computers" />
           </Tab>
-          <Tab eventKey="AC" title="AC">
-            <ProductList accessFrom="shop" category="AC"/>
+          <Tab eventKey="Home Electronics" title="Home Electronics">
+            <ProductList accessFrom="shop" category="Home Electronics"/>
           </Tab>
         </Tabs>
       </Container>
