@@ -1,8 +1,8 @@
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Logo from "../../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logOut } from "../../features/users/usersSlice";
@@ -13,10 +13,12 @@ function Header() {
   const { isLoggedIn } = useSelector((state) => state.users);
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="bg-body-tertiary py-0 fs-5">
       <Container fluid>
-        <div className="d-flex gap-3">
-          <NavLink to={"/"}>Tek-Electronics</NavLink>
+        <div className="d-flex gap-3 align-items-center">
+          <NavLink to={"/"}>
+            <img src={Logo } style={{height: "100px"}} alt="Tek-Electronics" />
+          </NavLink>
           {isLoggedIn ? (
             <>
               <NavLink to={"/shop"}>Shop Now</NavLink>
@@ -34,7 +36,13 @@ function Header() {
           <Form className="d-flex gap-3">
             {!isLoggedIn ? (
               <>
-                <Nav.Link onClick={()=> {dispatch(logOut()); navigate("/login")}} title="Log-in" >
+                <Nav.Link
+                  onClick={() => {
+                    dispatch(logOut());
+                    navigate("/login");
+                  }}
+                  title="Log-in"
+                >
                   <i className="fa-solid fa-right-to-bracket fa-xl" />
                 </Nav.Link>
                 <NavLink to={"/signup"} title="Sign-up">
