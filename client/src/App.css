@@ -2,3 +2,7 @@ a {
   text-decoration: none !important;
   color: black !important;
 }
+
+body {
+  scroll-behavior: smooth;
+}

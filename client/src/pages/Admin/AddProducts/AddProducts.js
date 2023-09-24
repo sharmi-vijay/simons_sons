@@ -17,7 +17,6 @@ function AddProducts() {
   const token = useSelector((state) => state.users.credentials.token);
   const { singleProduct, isUpdate, productsCategory} = useSelector((state) => state.products);
 
-  // Changes
   const productTemplate = {
     name: "",
     brand: "",
@@ -60,14 +59,13 @@ function AddProducts() {
     dispatch(getAllProducts(token));
     setProduct(productTemplate);
   };
-  // Changes
+
   const updateProductBtn = () => {
     dispatch(updateProduct(product));
     dispatch(getAllProducts(token));
     setProduct(productTemplate);
   };
 
-  // Changes
   useEffect(() => {
     if (isUpdate) {
       setProduct({ ...product, ...singleProduct });
