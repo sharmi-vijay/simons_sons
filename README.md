@@ -1,4 +1,5 @@
 # Tek-Electronics - MERN app
+I developed this app using MERN-stack in which I used ReactJS for client side with Redux toolkit for state management on client side, I used Node & Express JS for making backend APIs and used MongoDB as database, in ethis app Admin can list Products which are available. Customers buy products by adding them to cart & generate Invoices.
 
 # Initializing App
 1. Clone the repository:
