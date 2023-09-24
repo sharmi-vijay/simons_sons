@@ -4,11 +4,12 @@ import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/esm/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../../features/users/usersSlice";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function Register() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userTemplate = {
     fullName: "",
@@ -28,7 +29,8 @@ function Register() {
     });
   };
 
-  const signUpBtn = () => {
+  const signUpBtn = (e) => {
+    e.preventDefault();
     if (user.password === user.confirmPassword) {
       const finalUser = {
         fullName: user.fullName,
@@ -38,17 +40,17 @@ function Register() {
         password: user.password,
       };
       dispatch(signUp(finalUser));
-      toast.success("User Signup Successfully!")
+      toast.success("User registered Successfully!");
       setUser(userTemplate);
     } else {
-      toast.error("Password does not match!")
+      toast.error("Password does not match!");
     }
   };
 
   return (
     <Container>
       <h1>Registeration</h1>
-      <Form>
+      <Form onSubmit={signUpBtn}>
         <Form.Group className="mb-3">
           <Form.Label>Full Name</Form.Label>
           <Form.Control
@@ -57,6 +59,7 @@ function Register() {
             value={user.fullName}
             onChange={handleChange}
             placeholder="Enter your Full Name"
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -67,6 +70,7 @@ function Register() {
             value={user.phone}
             onChange={handleChange}
             placeholder="Enter your Phone Number"
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -77,6 +81,7 @@ function Register() {
             value={user.address}
             onChange={handleChange}
             placeholder="Enter your Street Address"
+            required
           />
         </Form.Group>
 
@@ -87,7 +92,8 @@ function Register() {
             name="email"
             value={user.email}
             onChange={handleChange}
-            placeholder="Enter email"
+            placeholder="Enter Email"
+            required
           />
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.
@@ -101,7 +107,8 @@ function Register() {
             name="password"
             value={user.password}
             onChange={handleChange}
-            placeholder="Password"
+            placeholder="Enter your password Password"
+            required
           />
         </Form.Group>
 
@@ -112,11 +119,12 @@ function Register() {
             name="confirmPassword"
             value={user.confirmPassword}
             onChange={handleChange}
-            placeholder="Password"
+            placeholder="Confirm you password Password"
+            required
           />
         </Form.Group>
         <div className="d-flex gap-2">
-          <Button variant="primary" type="button" onClick={signUpBtn}>
+          <Button variant="primary" type="submit">
             Register
           </Button>
           <NavLink to={"/login"}>
