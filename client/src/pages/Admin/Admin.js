@@ -37,9 +37,9 @@ function Admin() {
     ) {
       localStorage.setItem("adminLogin", JSON.stringify(true));
       navigate("/admin/addproducts")
-      toast.success("Wellcome Admin")
+      toast.success("Admin login successfully!")
     } else {
-      toast.error("Wrong credentials")
+      toast.error("Login failed! Wrong credentials.")
     }
   };
 

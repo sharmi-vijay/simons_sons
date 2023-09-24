@@ -121,7 +121,7 @@ function Invoices() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="13">No Data Available</td>
+                    <td colSpan="13">No invoices records yet.</td>
                   </tr>
                 )}{" "}
               </>
