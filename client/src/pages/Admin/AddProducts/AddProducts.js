@@ -10,7 +10,6 @@ import {
   getAllProducts,
   updateProduct,
 } from "../../../features/products/productsSlice";
-import demoImg from "../../../assets/demoImage.png";
 import ProductList from "../../../components/ProductList/ProductList";
 
 function AddProducts() {
@@ -19,7 +18,7 @@ function AddProducts() {
   const { singleProduct, isUpdate } = useSelector((state) => state.products);
 
   // Changes
-  const obj = {
+  const productTemplate = {
     name: "",
     brand: "",
     price: "",
@@ -27,7 +26,7 @@ function AddProducts() {
     category: "",
   };
 
-  const [product, setProduct] = useState(obj);
+  const [product, setProduct] = useState(productTemplate);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,13 +57,13 @@ function AddProducts() {
   const addProductBtn = () => {
     dispatch(addProduct(product));
     dispatch(getAllProducts(token));
-    setProduct(obj);
+    setProduct(productTemplate);
   };
   // Changes
   const updateProductBtn = () => {
     dispatch(updateProduct(product));
     dispatch(getAllProducts(token));
-    setProduct(obj);
+    setProduct(productTemplate);
   };
 
   // Changes
@@ -161,7 +160,7 @@ function AddProducts() {
                 {product.image ? (
                   <>
                     <img
-                      src={product.image ? product.image : demoImg}
+                      src={product.image}
                       style={{ height: "180px", width: "100%" }}
                     />
                   </>

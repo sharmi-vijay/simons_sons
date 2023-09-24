@@ -7,7 +7,11 @@ import {
   deleteProduct,
   setDatatoForm,
 } from "../../features/products/productsSlice";
-import { addToCart, removeFromCart } from "../../features/invoices/invoicesSlice";
+import NoImage from "../../assets/NoImage.png";
+import {
+  addToCart,
+  removeFromCart,
+} from "../../features/invoices/invoicesSlice";
 
 function ProductList(props) {
   const dispatch = useDispatch();
@@ -15,15 +19,17 @@ function ProductList(props) {
   // PRODUCT LISTING
   const { accessFrom, category } = props;
   const products = useSelector((state) => state.products.productList);
-  const token = useSelector((state) => state.users.credentials.token)
+  const token = useSelector((state) => state.users.credentials.token);
 
-  const filteredProducts = products && products.filter((product) => {
-    if (category == "All") {
-      return products;
-    } else {
-      return product.category === category;
-    }
-  });
+  const filteredProducts =
+    products &&
+    products.filter((product) => {
+      if (category == "All") {
+        return products;
+      } else {
+        return product.category === category;
+      }
+    });
 
   useEffect(() => {
     dispatch(getAllProducts(token));
@@ -52,7 +58,7 @@ function ProductList(props) {
     dispatch(addToCart(product));
   };
 
-  const removeFromCartBtn =(prod) => {
+  const removeFromCartBtn = (prod) => {
     const product = {
       productId: prod._id,
       name: prod.name,
@@ -62,15 +68,16 @@ function ProductList(props) {
     };
     console.log("Remove Prod");
     dispatch(removeFromCart(product));
-  }
+  };
 
   return (
     <>
       <div className="d-flex gap-3">
         {accessFrom === "admin"
-          ? products && products.map((product, id) => (
+          ? products &&
+            products.map((product, id) => (
               <Card key={id} style={{ width: "18rem" }}>
-                <Card.Img variant="top" src={product.image} />
+                <Card.Img variant="top" src={product.image == "" ? NoImage : product.image} />
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>
                   <Card.Text>
@@ -103,7 +110,10 @@ function ProductList(props) {
             ))
           : filteredProducts.map((product, id) => (
               <Card key={id} style={{ width: "18rem" }}>
-                <Card.Img variant="top" src={product.image} />
+                <Card.Img
+                  variant="top"
+                  src={product.image == "" ? NoImage : product.image}
+                />
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>
                   <Card.Text>
@@ -119,8 +129,11 @@ function ProductList(props) {
                     {productsCart.includes(product.name) ? (
                       <>
                         {" "}
-                        <Button variant="danger" size={"sm"}
-                        onClick={() => removeFromCartBtn(product)}>
+                        <Button
+                          variant="danger"
+                          size={"sm"}
+                          onClick={() => removeFromCartBtn(product)}
+                        >
                           Remove from Cart
                         </Button>{" "}
                       </>
