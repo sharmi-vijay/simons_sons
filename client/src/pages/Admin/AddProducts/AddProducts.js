@@ -51,10 +51,7 @@ function AddProducts() {
             ...product,
             image: e.target.result,
           });
-          toast.success(file.size);
         };
-      } else {
-        toast.error(file.size);
       }
     }
   };
