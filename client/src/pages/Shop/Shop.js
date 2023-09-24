@@ -4,8 +4,13 @@ import Tabs from "react-bootstrap/Tabs";
 import Container from "react-bootstrap/esm/Container";
 import ProductList from "../../components/ProductList/ProductList";
 import Cart from "../../components/Cart/Cart";
+import { useSelector } from "react-redux";
 
 function Shop() {
+  const productsCategory = useSelector(
+    (state) => state.products.productsCategory
+  );
+  console.log(productsCategory);
   return (
     <>
       <Container>
@@ -24,15 +29,11 @@ function Shop() {
           <Tab eventKey="All" title="All">
             <ProductList accessFrom="shop" category="All" />
           </Tab>
-          <Tab eventKey="Mobiles" title="Mobiles">
-            <ProductList accessFrom="shop" category="Mobile" />
-          </Tab>
-          <Tab eventKey="Laptops & Computers" title="Laptops & Computers">
-            <ProductList accessFrom="shop" category="Laptops & Computers" />
-          </Tab>
-          <Tab eventKey="Home Electronics" title="Home Electronics">
-            <ProductList accessFrom="shop" category="Home Electronics"/>
-          </Tab>
+          {productsCategory.map((cat, id) => (
+            <Tab key={id} eventKey={cat} title={cat}>
+              <ProductList accessFrom="shop" category={cat} />
+            </Tab>
+          ))}
         </Tabs>
       </Container>
     </>

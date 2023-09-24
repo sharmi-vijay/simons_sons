@@ -3,7 +3,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   productList: [],
-  // Changes
+  productsCategory: [
+    "Mobile",
+    "Laptops & Computers",
+    "Home Electronics",
+  ],
   singleProduct: null,
   isUpdate: false,
   isLoading: false,

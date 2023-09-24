@@ -15,7 +15,7 @@ import ProductList from "../../../components/ProductList/ProductList";
 function AddProducts() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.users.credentials.token);
-  const { singleProduct, isUpdate } = useSelector((state) => state.products);
+  const { singleProduct, isUpdate, productsCategory} = useSelector((state) => state.products);
 
   // Changes
   const productTemplate = {
@@ -26,11 +26,6 @@ function AddProducts() {
     category: "",
   };
 
-  const productsCategory = [
-    "Mobile",
-    "Laptops & Computers",
-    "Home Electronics",
-  ];
 
   const [product, setProduct] = useState(productTemplate);
 
