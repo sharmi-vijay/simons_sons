@@ -20,7 +20,7 @@ function Header() {
           {isLoggedIn ? (
             <>
               <NavLink to={"/shop"}>Shop Now</NavLink>
-              <NavLink to={"/invoices"}>Invoices</NavLink>
+              <NavLink to={"/invoices"}>Your Invoices</NavLink>
             </>
           ) : null}
         </div>
@@ -43,7 +43,7 @@ function Header() {
               </>
             ) : (
               <>
-                <NavLink to={"/admin"}>Admin Pannel</NavLink>
+                <NavLink to={"/admin"}>Admin Panel</NavLink>
                 <Nav.Link
                   onClick={() => {
                     navigate("/login");

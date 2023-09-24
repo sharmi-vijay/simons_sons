@@ -14,7 +14,7 @@ import ProductList from "../../../components/ProductList/ProductList";
 
 function AddProducts() {
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.users.credentials.token)
+  const token = useSelector((state) => state.users.credentials.token);
   const { singleProduct, isUpdate } = useSelector((state) => state.products);
 
   // Changes
@@ -25,6 +25,12 @@ function AddProducts() {
     image: "",
     category: "",
   };
+
+  const productsCategory = [
+    "Mobile",
+    "Laptops & Computers",
+    "Home Electronics",
+  ];
 
   const [product, setProduct] = useState(productTemplate);
 
@@ -118,20 +124,27 @@ function AddProducts() {
                   placeholder="Price ($)"
                 />
               </Form.Group>
-
+              
               <Form.Group
                 as={Col}
                 className="mb-3"
-                controlId="formBasicPassword"
+                controlId="validationCustom01"
               >
-                <Form.Control
-                  type="text"
+                <Form.Select
                   name="category"
                   value={product.category}
                   onChange={handleChange}
-                  placeholder="Category"
-                />
+                  aria-label="Default select example"
+                >
+                  <option>Category</option>
+                  {productsCategory.map((category, id) => (
+                    <option key={id} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </Form.Select>
               </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label
                   htmlFor="productImage"
