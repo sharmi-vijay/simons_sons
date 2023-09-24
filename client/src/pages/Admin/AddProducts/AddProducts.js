@@ -11,11 +11,16 @@ import {
   updateProduct,
 } from "../../../features/products/productsSlice";
 import ProductList from "../../../components/ProductList/ProductList";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function AddProducts() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = useSelector((state) => state.users.credentials.token);
-  const { singleProduct, isUpdate, productsCategory} = useSelector((state) => state.products);
+  const { singleProduct, isUpdate, productsCategory } = useSelector(
+    (state) => state.products
+  );
 
   const productTemplate = {
     name: "",
@@ -24,7 +29,6 @@ function AddProducts() {
     image: "",
     category: "",
   };
-
 
   const [product, setProduct] = useState(productTemplate);
 
@@ -38,16 +42,21 @@ function AddProducts() {
 
   const uploadFile = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    console.log(file);
-    reader.readAsDataURL(file);
-    reader.onload = (e) => {
-      setProduct({
-        ...product,
-        image: e.target.result,
-      });
-      console.log(e.target.result);
-    };
+    if (file) {
+      const reader = new FileReader();
+      if (file.size <= 5000000) {
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          setProduct({
+            ...product,
+            image: e.target.result,
+          });
+          toast.success(file.size);
+        };
+      } else {
+        toast.error(file.size);
+      }
+    }
   };
 
   useEffect(() => {
@@ -72,11 +81,31 @@ function AddProducts() {
     }
   }, [isUpdate]);
 
+  useEffect(() => {
+    const isAdminLoggedIn = localStorage.getItem("adminLogin");
+    if (!isAdminLoggedIn) {
+      navigate("/admin");
+    }
+  }, []);
+
   return (
     <>
       <Container>
-        {/* Changes */}
-        <h1> {isUpdate ? "Update" : "Add"} Product</h1>
+        <div className="d-flex justify-content-between my-4">
+          <h1> {isUpdate ? "Update" : "Add"} Product</h1>
+          <div>
+            <Button
+              variant="success"
+              size="md"
+              onClick={() => {
+                navigate("/admin");
+                localStorage.removeItem("adminLogin");
+              }}
+            >
+              Log Out
+            </Button>
+          </div>
+        </div>
         <Form>
           <Row>
             <Col md={4}>
@@ -117,7 +146,7 @@ function AddProducts() {
                   placeholder="Price ($)"
                 />
               </Form.Group>
-              
+
               <Form.Group
                 as={Col}
                 className="mb-3"

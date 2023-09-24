@@ -9,9 +9,9 @@ const app = express();
 const PORT = process.env.PORT;
 connectDB();
 
-app.use(express.json());
+app.use(express.json({limit: "60mb"}));
 app.use(cors());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({limit: "60mb", extended: false }));
 
 app.use('/api/users', require('./routes/usersRoutes'));
 app.use('/api/products', jwtAuthChecker, require('./routes/productsRoutes'))

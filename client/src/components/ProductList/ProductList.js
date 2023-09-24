@@ -42,6 +42,7 @@ function ProductList(props) {
   };
   const updateProductBtn = (data) => {
     dispatch(setDatatoForm(data));
+    window.scrollTo(0,0);
   };
 
   // ------------------ SHOP BUTTONS ------------------
@@ -72,7 +73,7 @@ function ProductList(props) {
 
   return (
     <>
-      <div className="d-flex gap-3">
+      <div className="d-flex gap-3 flex-wrap">
         {accessFrom === "admin"
           ? products &&
             products.map((product, id) => (
