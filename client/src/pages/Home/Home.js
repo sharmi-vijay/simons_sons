@@ -63,6 +63,7 @@ function Home() {
           destination for all things electronic accessories.
         </p>
         <Button
+          variant="warning"
           onClick={() => {
             isLoggedIn ? navigate("/shop") : navigate("/login");
           }}

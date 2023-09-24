@@ -13,15 +13,15 @@ function Header() {
   const { isLoggedIn } = useSelector((state) => state.users);
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary py-0 fs-5">
+    <Navbar expand="lg" style={{fontWeight: "bold"}} className="bg-body-tertiary py-0 fs-6">
       <Container fluid>
         <div className="d-flex gap-3 align-items-center">
           <NavLink to={"/"}>
-            <img src={Logo } style={{height: "100px"}} alt="Tek-Electronics" />
+            <img src={Logo } style={{height: "80px"}} alt="Tek-Electronics" />
           </NavLink>
           {isLoggedIn ? (
             <>
-              <NavLink to={"/shop"}>Shop Now</NavLink>
+              <NavLink to={"/shop"}>Shop</NavLink>
               <NavLink to={"/invoices"}>Your Invoices</NavLink>
             </>
           ) : null}
