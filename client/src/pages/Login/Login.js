@@ -38,7 +38,6 @@ function Login() {
     }
     
     if (isError) {
-      navigate("/");
       toast.error(message);
     }
   }, [isSuccess, isError, message]);
