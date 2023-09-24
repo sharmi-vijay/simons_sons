@@ -59,6 +59,8 @@ npm start
 15. Once you Generate the Invoice, the invoice records get save in Database.
 16. You can check your Invoices on "Invoices" page.
 17. You can also delete the Invoices records records.
+18. I didn't make an PUT API for Invoice instead the user can Remove products from Cart.
+19. Once client generate invoice, he/she cannot update it as it is generated.
 ## Search Invoices with Product Name
-18. From the Search tab on "Invoices" page you can Search Invoices by Product Names.
+20. From the Search tab on "Invoices" page you can Search Invoices by Product Names.
 
