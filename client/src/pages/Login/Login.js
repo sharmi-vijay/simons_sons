@@ -27,7 +27,8 @@ function Login() {
     });
   };
 
-  const logInBtn = () => {
+  const logInBtn = (e) => {
+    e.preventDefault();
     dispatch(logIn(credentials));
   };
 
@@ -45,7 +46,7 @@ function Login() {
   return (
     <Container>
       <h1>Login</h1>
-      <Form>
+      <Form onSubmit={logInBtn}>
         <Form.Group as={Col} md={4} className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -53,7 +54,8 @@ function Login() {
             name="email"
             value={credentials.email}
             onChange={handleChange}
-            placeholder="Enter email"
+            placeholder="Enter your Email"
+            required
           />
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.
@@ -72,11 +74,12 @@ function Login() {
             name="password"
             value={credentials.password}
             onChange={handleChange}
-            placeholder="Password"
+            placeholder="Enter your Password"
+            required
           />
         </Form.Group>
         <div className="d-flex gap-2">
-          <Button variant="primary" type="button" onClick={logInBtn}>
+          <Button variant="primary" type="submit">
             Login
           </Button>
           <NavLink to={"/signup"}>
