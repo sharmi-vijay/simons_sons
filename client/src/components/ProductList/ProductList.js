@@ -20,7 +20,6 @@ function ProductList(props) {
   // PRODUCT LISTING
   const { accessFrom, category } = props;
   const products = useSelector((state) => state.products.productList);
-  const isDelSuccess = useSelector((state) => state.products.productList);
   const token = useSelector((state) => state.users.credentials.token);
 
   const filteredProducts =
@@ -46,13 +45,6 @@ function ProductList(props) {
   useEffect(() => {
     dispatch(getAllProducts(token));
   }, []);
-
-  // useEffect(() => {
-  //   if (isDelSuccess) {
-  //     toast.success("Product deleted successfully!");
-  //     dispatch(getAllProducts(token));
-  //   }
-  // }, [isDelSuccess]);
 
   // ------------------ SHOP BUTTONS ------------------
   const productsCart = useSelector((state) => state.invoices.productsCart);

@@ -90,7 +90,9 @@ function AddProducts() {
   return (
     <>
       <Container>
-        <h1 className="my-4"> {isUpdate ? "Update" : "Add"} Product</h1>
+        <div className="d-flex">
+          <h1 className="my-4"> {isUpdate ? "Update" : "Add"} Product</h1>
+        </div>
         <Form onSubmit={isUpdate ? updateProductBtn : addProductBtn}>
           <Row>
             <Col md={4}>
@@ -198,7 +200,19 @@ function AddProducts() {
           </Button>
         </Form>
 
-        <h1 className="my-4">Product List</h1>
+        <div className="d-flex align-items-center gap-4">
+          <h1 className="my-4">Product List</h1>
+          <div>
+            <Button
+              type="button"
+              variant="success"
+              size="sm"
+              onClick={() => dispatch(getAllProducts(token))}
+            >
+              <i className="fa-solid fa-arrows-rotate"/>
+            </Button>
+          </div>
+        </div>
         <ProductList accessFrom="admin" />
       </Container>
     </>
