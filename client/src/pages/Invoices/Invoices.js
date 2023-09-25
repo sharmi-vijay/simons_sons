@@ -82,7 +82,7 @@ function Invoices() {
               <th>Phone #</th>
               <th>Email</th>
               <th>Date</th>
-              <th>Delivery Date</th>
+              <th>Expected Delivery Date</th>
               <th>Total Cost ($)</th>
               <th>Street Address</th>
               <th>Actions</th>
