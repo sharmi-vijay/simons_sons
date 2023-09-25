@@ -41,7 +41,7 @@ function Invoices() {
 
   useEffect(() => {
     dispatch(getAllInvoices(credentials));
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (isDelSuccess) {

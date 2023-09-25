@@ -33,7 +33,7 @@ function ProductList(props) {
 
   useEffect(() => {
     dispatch(getAllProducts(token));
-  }, [products]);
+  }, []);
 
   // ------------------ ADMIN BUTTONS ------------------
   const deleteProductBtn = (id) => {
