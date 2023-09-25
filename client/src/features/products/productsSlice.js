@@ -10,6 +10,7 @@ const initialState = {
   ],
   singleProduct: null,
   isUpdate: false,
+  isDelSuccess: false,
   isLoading: false,
   isSuccess: false,
   isError: false,
@@ -126,18 +127,21 @@ export const productsSlice = createSlice({
       // Add Product
       .addCase(addProduct.pending, (state) => {
         state.isLoading = true;
+        state.isDelSuccess = false;
         state.isSuccess = false;
         state.isError = false;
         state.message = "";
       })
       .addCase(addProduct.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isDelSuccess = false;
         state.isSuccess = true;
         state.isError = false;
         state.message = "Product added successfully!";
       })
       .addCase(addProduct.rejected, (state, action) => {
         state.isLoading = false;
+        state.isDelSuccess = false;
         state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
@@ -145,6 +149,7 @@ export const productsSlice = createSlice({
       // Read all products
       .addCase(getAllProducts.pending, (state) => {
         state.isLoading = true;
+        state.isDelSuccess = false;
         state.isSuccess = false;
         state.isError = false;
         state.message = "";
@@ -152,6 +157,7 @@ export const productsSlice = createSlice({
       .addCase(getAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.isDelSuccess = false;
         state.isError = false;
         state.message = "Product added successfully!";
         state.productList = action.payload;
@@ -159,6 +165,7 @@ export const productsSlice = createSlice({
       .addCase(getAllProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
+        state.isDelSuccess = false;
         state.isError = true;
         state.message = action.payload;
       })
@@ -166,18 +173,21 @@ export const productsSlice = createSlice({
       .addCase(deleteProduct.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
+        state.isDelSuccess = false;
         state.isError = false;
         state.message = "";
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.isDelSuccess = true;
         state.isError = false;
         state.message = "Product deleted successfully!";
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
+        state.isDelSuccess = false;
         state.isError = true;
         state.message = "Product deletion failed";
       })

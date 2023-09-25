@@ -12,6 +12,7 @@ import {
   addToCart,
   removeFromCart,
 } from "../../features/invoices/invoicesSlice";
+import { toast } from "react-toastify";
 
 function ProductList(props) {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function ProductList(props) {
   // PRODUCT LISTING
   const { accessFrom, category } = props;
   const products = useSelector((state) => state.products.productList);
+  const isDelSuccess = useSelector((state) => state.products.productList);
   const token = useSelector((state) => state.users.credentials.token);
 
   const filteredProducts =
@@ -31,10 +33,6 @@ function ProductList(props) {
       }
     });
 
-  useEffect(() => {
-    dispatch(getAllProducts(token));
-  }, []);
-
   // ------------------ ADMIN BUTTONS ------------------
   const deleteProductBtn = (id) => {
     dispatch(deleteProduct(id));
@@ -44,6 +42,17 @@ function ProductList(props) {
     dispatch(setDatatoForm(data));
     window.scrollTo(0,0);
   };
+
+  useEffect(() => {
+    dispatch(getAllProducts(token));
+  }, []);
+
+  // useEffect(() => {
+  //   if (isDelSuccess) {
+  //     toast.success("Product deleted successfully!");
+  //     dispatch(getAllProducts(token));
+  //   }
+  // }, [isDelSuccess]);
 
   // ------------------ SHOP BUTTONS ------------------
   const productsCart = useSelector((state) => state.invoices.productsCart);
