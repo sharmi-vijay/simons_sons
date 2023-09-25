@@ -114,7 +114,7 @@ export const productsSlice = createSlice({
     },
     reset: (state) => {
       state.singleProduct = null;
-        state.isUpdate = false;
+      state.isUpdate = false;
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = false;
@@ -145,6 +145,7 @@ export const productsSlice = createSlice({
       // Read all products
       .addCase(getAllProducts.pending, (state) => {
         state.isLoading = true;
+        state.isUpdate = false;
         state.isSuccess = false;
         state.isError = false;
         state.message = "";
@@ -152,6 +153,7 @@ export const productsSlice = createSlice({
       .addCase(getAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.isUpdate = false;
         state.isError = false;
         state.message = "Product added successfully!";
         state.productList = action.payload;
@@ -181,7 +183,7 @@ export const productsSlice = createSlice({
         state.isError = true;
         state.message = "Product deletion failed";
       })
-      // Udate Product
+      // Update Product
       .addCase(updateProduct.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
@@ -193,6 +195,7 @@ export const productsSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.isUpdate = true;
+        state.singleProduct = null;
         state.message = "Product Updated successfully!";
       })
       .addCase(updateProduct.rejected, (state, action) => {

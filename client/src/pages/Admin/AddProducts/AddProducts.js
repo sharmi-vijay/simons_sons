@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addProduct,
   getAllProducts,
+  reset,
   updateProduct,
 } from "../../../features/products/productsSlice";
 import ProductList from "../../../components/ProductList/ProductList";

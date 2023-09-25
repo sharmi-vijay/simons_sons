@@ -123,13 +123,10 @@ function Register() {
             required
           />
         </Form.Group>
-        <div className="d-flex gap-2">
+        <div className="d-flex">
           <Button variant="primary" type="submit">
             Register
           </Button>
-          <NavLink to={"/login"}>
-            Haven't account yet? Register yourself!
-          </NavLink>
         </div>
       </Form>
     </Container>
