@@ -13,8 +13,8 @@ function Admin() {
   const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
 
   const admin = {
-    username: "humantek",
-    password: "humantek",
+    username: "sharmi",
+    password: "sharmi",
   };
 
   const [credentials, setCredentials] = useState({
@@ -37,7 +37,7 @@ function Admin() {
     ) {
       localStorage.setItem("adminLogin", JSON.stringify(true));
       navigate("/admin/addproducts")
-      toast.success("Admin login successfully!")
+      toast.success("Admin logged In successfully!")
     } else {
       toast.error("Login failed! Wrong credentials.")
     }

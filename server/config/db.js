@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-
+const express = require('express')
+const router = express.Router();
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
@@ -11,5 +12,19 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
+
+//updated for storing user data from db
+
+// const User = mongoose.model('users', {fullName: String, phone:String, address: String, email: String})
+// router.get('/', async(req, res) =>{
+//   try{
+//     const users = await User.find();
+//     res.json(users);
+//   }catch(err){
+//     res.status(500).json({message: err.message});
+//   }
+// });
+
+module.exports = router;
 
 module.exports = connectDB;

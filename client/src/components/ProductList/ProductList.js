@@ -26,7 +26,7 @@ function ProductList(props) {
     products &&
     products.filter((product) => {
       if (category == "All") {
-        return products;
+        return products;  //changed
       } else {
         return product.category === category;
       }

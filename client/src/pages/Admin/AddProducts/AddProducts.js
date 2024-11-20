@@ -16,6 +16,32 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function AddProducts() {
+
+  const [users, setUsers] = useState([]);
+
+  const userData = async() =>{
+    try {
+    const response = await fetch('/api/users',{
+      headers :{
+        'Accept': "application/json"
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch users');
+    }
+    const contentType = response.headers.get('content-type');
+    if(contentType && contentType.includes('application/json')){ 
+           const data = await response.json();
+      setUsers(data);
+    }else{
+      throw new Error('Response is not JSON');
+    }
+  } catch (error) {
+    console.error(error.message);
+    // Handle error (e.g., show error message to user)
+  }
+  };
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.users.credentials.token);
@@ -133,7 +159,7 @@ function AddProducts() {
                   name="price"
                   value={product.price}
                   onChange={handleChange}
-                  placeholder="Price ($)"
+                  placeholder="Price"
                   required
                 />
               </Form.Group>
@@ -198,8 +224,18 @@ function AddProducts() {
           </Row>
           <Button variant="primary" type="submit">
             {isUpdate ? "Update" : "Add"} Product
-          </Button>
+          </Button>{" "}
         </Form>
+
+        {/* <div>  
+        <Button variant="secondary" onClick={userData}></Button>
+          <ul>
+            {users.map(user => (
+              <li key = {user._id}>{user.fullName} - {user.phone} - {user.address} - {user.email}</li>
+            ))}
+          </ul>
+        </div> */}
+
 
         <div className="d-flex align-items-center gap-4">
           <h1 className="my-4">Product List</h1>

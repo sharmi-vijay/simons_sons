@@ -89,13 +89,13 @@ function Cart() {
                 <b>Full Name:</b> {user.fullName}
               </div>
               <div>
-                <b>Street Address:</b> {user.address}
+                <b>Address:</b> {user.address}
               </div>
               <div>
-                <b>Phone #</b> {user.phone}
+                <b>Phone</b> {user.phone}
               </div>
               <div>
-                <b>Email Address</b> {user.email}
+                <b>Email</b> {user.email}
               </div>
             </Row>
             <Row className="mt-4">
@@ -103,7 +103,7 @@ function Cart() {
               <div>
                 <b>Products:</b>
                 {productsCart.length == 0 ? (
-                  <p>No products in cart yet</p>
+                  <p>No products in cart now</p>
                 ) : (
                   <ul>
                     {productsCart.map((product, id) => (
@@ -113,7 +113,7 @@ function Cart() {
                 )}
               </div>
               <div>
-                <b>Total Cost</b> {totalCost}$
+                <b>Total Cost</b> Rs.{totalCost}
               </div>
               <div>
                 <b>Date</b> {getDates().date}
@@ -125,7 +125,7 @@ function Cart() {
             <Row className="mt-4">
               <div>
                 <Button type="button" onClick={() => generateInvoice()}>
-                  Generate Invoice
+                  Generate CartList
                 </Button>
               </div>
             </Row>

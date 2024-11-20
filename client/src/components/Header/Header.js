@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/antique-logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { logOut } from "../../features/users/usersSlice";
@@ -19,16 +19,16 @@ function Header() {
       style={{ fontWeight: "bold" }}
       className="bg-body-tertiary py-0 fs-6"
     >
-      <Container fluid>
+      <Container fluid style={{backgroundColor: "ghostwhite"}}>
         <div className="d-flex gap-3 align-items-center">
           <NavLink to={"/"}>
-            <img src={Logo} style={{ height: "80px" }} alt="Tek-Electronics" />
+            <img src={Logo} style={{ height: "60px" ,padding: "5px"}} alt="Antique Apparatus" />
           </NavLink>
           {isLoggedIn &&
           !(location.pathname.indexOf("/admin/addproducts") !== -1) ? (
             <>
               <NavLink to={"/shop"}>Shop</NavLink>
-              <NavLink to={"/invoices"}>Your Invoices</NavLink>
+              <NavLink to={"/invoices"}>CartList</NavLink>
             </>
           ) : null}
         </div>
@@ -59,7 +59,7 @@ function Header() {
               <>
                 {isLoggedIn &&
                 !(location.pathname.indexOf("/admin/addproducts") !== -1) ? (
-                  <NavLink to={"/admin"}>Admin Panel</NavLink>
+                  <NavLink to={"/admin"}>Admin</NavLink>
                 ) : null}
 
                 <Nav.Link

@@ -6,8 +6,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../../features/users/usersSlice";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Typewriter from "typewriter-effect";
 
 function Register() {
+
+  const styles = {
+    fieldset: {
+      color: "white",
+      border: '2px solid #ccc',
+      padding: '20px',
+      borderRadius: '5px',
+      maxWidth: '650px',
+      margin: '0 auto',
+      marginTop: "30px",
+      backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGC4sXna6cHCxUy07rbBVSH16nJ3S234x9yg&usqp=CAU')`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover"
+    },
+    background :{
+      // backgroundColor: "darkOliveGreen", 
+      padding: '20px',
+      outerHeight: '20em',
+      flexDirection: "row",
+      height: "100vh"
+    },
+  };
+
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -48,14 +73,24 @@ function Register() {
   };
 
   return (
+    <div style={styles.background}>
     <Container>
-      <h1>Registeration</h1>
+    <fieldset style={styles.fieldset}>
+      <legend><h1><Typewriter 
+            onInit={(typewriter) => {
+              typewriter.typeString("Registeration")
+              .pauseFor(2000)
+              .start();
+            }}
+         /></h1></legend>
+
       <Form onSubmit={signUpBtn}>
         <Form.Group className="mb-3">
           <Form.Label>Full Name</Form.Label>
           <Form.Control
             type="text"
             name="fullName"
+            id = "fullName"
             value={user.fullName}
             onChange={handleChange}
             placeholder="Enter your Full Name"
@@ -67,6 +102,7 @@ function Register() {
           <Form.Control
             type="text"
             name="phone"
+            id = "phone"
             value={user.phone}
             onChange={handleChange}
             placeholder="Enter your Phone Number"
@@ -74,7 +110,7 @@ function Register() {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Street Address</Form.Label>
+          <Form.Label>Address</Form.Label>
           <Form.Control
             type="text"
             name="address"
@@ -90,6 +126,7 @@ function Register() {
           <Form.Control
             type="email"
             name="email"
+            id ="email"
             value={user.email}
             onChange={handleChange}
             placeholder="Enter Email"
@@ -129,7 +166,9 @@ function Register() {
           </Button>
         </div>
       </Form>
+      </fieldset>
     </Container>
+    </div>
   );
 }
 

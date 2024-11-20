@@ -144,7 +144,7 @@ export const invoicesSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.message = "Invoice created successfully!";
+        state.message = "Record created successfully!";
       })
       .addCase(createInvoice.rejected, (state, action) => {
         state.isLoading = false;
@@ -164,7 +164,7 @@ export const invoicesSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.message = "Got all invoices successfully!";
+        state.message = "Got all records successfully!";
         state.invoicesList = action.payload;
       })
       .addCase(getAllInvoices.rejected, (state, action) => {
@@ -185,7 +185,7 @@ export const invoicesSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.message = "Got search invoices successfully!";
+        state.message = "Got search successfully!";
         state.invoicesList = action.payload;
       })
       .addCase(searchInvoices.rejected, (state, action) => {
@@ -206,14 +206,14 @@ export const invoicesSlice = createSlice({
         state.isLoading = false;
         state.isDelSuccess = true;
         state.isError = false;
-        state.message = "Invoice record deleted successfully!";
+        state.message = "Record deleted successfully!";
       })
       .addCase(deleteInvoice.rejected, (state, action) => {
         state.isLoading = false;
         state.isDelSuccess = false;
         state.isSuccess = false;
         state.isError = true;
-        state.message = "Invoice record deletion failed";
+        state.message = "Record deletion failed";
       });
   },
 });
@@ -224,3 +224,4 @@ export const { addToCart, removeFromCart, removeAllFromCart, reset } =
   invoicesSlice.actions;
 
 export default invoicesSlice.reducer;
+

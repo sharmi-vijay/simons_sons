@@ -13,7 +13,10 @@ app.use(express.json({limit: "60mb"}));
 app.use(cors());
 app.use(express.urlencoded({limit: "60mb", extended: false }));
 
+//updated
 app.use('/api/users', require('./routes/usersRoutes'));
+
+
 app.use('/api/products', jwtAuthChecker, require('./routes/productsRoutes'))
 app.use('/api/invoices', jwtAuthChecker, require('./routes/invoicesRoutes'))
 

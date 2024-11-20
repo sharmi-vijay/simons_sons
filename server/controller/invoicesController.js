@@ -21,10 +21,10 @@ const deleteInvoice = async (request, response) => {
   if (data) {
     response.json({
       deletedInvoice: data,
-      message: "Invoice record deleted successfully!",
+      message: "record deleted successfully!",
     });
   } else {
-    response.send("Invoice record not found!");
+    response.send("record not found!");
   }
 };
 
