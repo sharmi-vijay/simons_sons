@@ -105,122 +105,271 @@ export const deleteInvoice = createAsyncThunk(
 
 export const invoicesSlice = createSlice({
   name: "invoices",
-  initialState,
+  initialState: {
+    productsCart: [],
+    invoicesList: [],
+    totalCost: 0,
+  },
   reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isSuccess = false;
-      state.isError = false;
-      state.message = "";
-    },
     addToCart: (state, action) => {
-      const name = action.payload.name;
-      const cost = action.payload.price;
-      state.totalCost += Number(cost);
-      state.productsCart = [...state.productsCart, name];
+      const existingProduct = state.productsCart.find(
+        (prod) => prod.productId === action.payload.productId
+      );
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        state.productsCart.push({ ...action.payload, quantity: 1 });
+      }
+      state.totalCost = state.productsCart.reduce(
+        (total, prod) => total + prod.price * prod.quantity,
+        0
+      );
     },
     removeFromCart: (state, action) => {
-      const name = action.payload.name;
-      const cost = action.payload.price;
-      state.totalCost -= Number(cost);
-      state.productsCart.splice(name, 1);
+      state.productsCart = state.productsCart.filter(
+        (prod) => prod.productId !== action.payload.productId
+      );
+      state.totalCost = state.productsCart.reduce(
+        (total, prod) => total + prod.price * prod.quantity,
+        0
+      );
+    },
+    incrementQuantity: (state, action) => {
+      const product = state.productsCart.find(
+        (prod) => prod.productId === action.payload.productId
+      );
+      if (product) {
+        product.quantity += 1;
+      }
+      state.totalCost = state.productsCart.reduce(
+        (total, prod) => total + prod.price * prod.quantity,
+        0
+      );
+    },
+    decrementQuantity: (state, action) => {
+      const product = state.productsCart.find(
+        (prod) => prod.productId === action.payload.productId
+      );
+      if (product && product.quantity > 1) {
+        product.quantity -= 1;
+      }
+      state.totalCost = state.productsCart.reduce(
+        (total, prod) => total + prod.price * prod.quantity,
+        0
+      );
     },
     removeAllFromCart: (state) => {
-      state.totalCost = 0;
       state.productsCart = [];
+      state.totalCost = 0;
     },
   },
   extraReducers: (builder) => {
-    builder
-      // Create invoice record
-      .addCase(createInvoice.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
-        state.isDelSuccess = false;
-        state.isError = false;
-        state.message = "";
-      })
-      .addCase(createInvoice.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.message = "Record created successfully!";
-      })
-      .addCase(createInvoice.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      // Read all invoice records
-      .addCase(getAllInvoices.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
-        state.isDelSuccess = false;
-        state.isError = false;
-        state.message = "";
-      })
-      .addCase(getAllInvoices.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.message = "Got all records successfully!";
-        state.invoicesList = action.payload;
-      })
-      .addCase(getAllInvoices.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      // search invoice records by users
-      .addCase(searchInvoices.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
-        state.isDelSuccess = false;
-        state.isError = false;
-        state.message = "";
-      })
-      .addCase(searchInvoices.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.message = "Got search successfully!";
-        state.invoicesList = action.payload;
-      })
-      .addCase(searchInvoices.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      // Delete invoice record
-      .addCase(deleteInvoice.pending, (state) => {
-        state.isLoading = true;
-        state.isDelSuccess = false;
-        state.isSuccess = false;
-        state.isError = false;
-        state.message = "";
-      })
-      .addCase(deleteInvoice.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isDelSuccess = true;
-        state.isError = false;
-        state.message = "Record deleted successfully!";
-      })
-      .addCase(deleteInvoice.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isDelSuccess = false;
-        state.isSuccess = false;
-        state.isError = true;
-        state.message = "Record deletion failed";
-      });
-  },
+        builder
+          // Create invoice record
+          .addCase(createInvoice.pending, (state) => {
+            state.isLoading = true;
+            state.isSuccess = false;
+            state.isDelSuccess = false;
+            state.isError = false;
+            state.message = "";
+          })
+          .addCase(createInvoice.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.isError = false;
+            state.message = "Record created successfully!";
+          })
+          .addCase(createInvoice.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = false;
+            state.isError = true;
+            state.message = action.payload;
+          })
+          // Read all invoice records
+          .addCase(getAllInvoices.pending, (state) => {
+            state.isLoading = true;
+            state.isSuccess = false;
+            state.isDelSuccess = false;
+            state.isError = false;
+            state.message = "";
+          })
+          .addCase(getAllInvoices.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.isError = false;
+            state.message = "Got all records successfully!";
+            state.invoicesList = action.payload;
+          })
+          .addCase(getAllInvoices.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = false;
+            state.isError = true;
+            state.message = action.payload;
+          })
+          // search invoice records by users
+          .addCase(searchInvoices.pending, (state) => {
+            state.isLoading = true;
+            state.isSuccess = false;
+            state.isDelSuccess = false;
+            state.isError = false;
+            state.message = "";
+          })
+          .addCase(searchInvoices.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.isError = false;
+            state.message = "Got search successfully!";
+            state.invoicesList = action.payload;
+          })
+          .addCase(searchInvoices.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = false;
+            state.isError = true;
+            state.message = action.payload;
+          })
+          // Delete invoice record
+          .addCase(deleteInvoice.pending, (state) => {
+            state.isLoading = true;
+            state.isDelSuccess = false;
+            state.isSuccess = false;
+            state.isError = false;
+            state.message = "";
+          })
+          .addCase(deleteInvoice.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isDelSuccess = true;
+            state.isError = false;
+            state.message = "Record deleted successfully!";
+          })
+          .addCase(deleteInvoice.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isDelSuccess = false;
+            state.isSuccess = false;
+            state.isError = true;
+            state.message = "Record deletion failed";
+          });
+      },
 });
+
+
+// export const invoicesSlice = createSlice({
+//   name: "invoices",
+//   initialState,
+//   reducers: {
+//     reset: (state) => {
+//       state.isLoading = false;
+//       state.isSuccess = false;
+//       state.isError = false;
+//       state.message = "";
+//     },
+//     addToCart: (state, action) => {
+//       const name = action.payload.name;
+//       const cost = action.payload.price;
+//       state.totalCost += Number(cost);
+//       state.productsCart = [...state.productsCart, name];
+//     },
+//     removeFromCart: (state, action) => {
+//       const name = action.payload.name;
+//       const cost = action.payload.price;
+//       state.totalCost -= Number(cost);
+//       state.productsCart.splice(name, 1);
+//     },
+//     removeAllFromCart: (state) => {
+//       state.totalCost = 0;
+//       state.productsCart = [];
+//     },
+//   },
+//   extraReducers: (builder) => {
+//     builder
+//       // Create invoice record
+//       .addCase(createInvoice.pending, (state) => {
+//         state.isLoading = true;
+//         state.isSuccess = false;
+//         state.isDelSuccess = false;
+//         state.isError = false;
+//         state.message = "";
+//       })
+//       .addCase(createInvoice.fulfilled, (state, action) => {
+//         state.isLoading = false;
+//         state.isSuccess = true;
+//         state.isError = false;
+//         state.message = "Record created successfully!";
+//       })
+//       .addCase(createInvoice.rejected, (state, action) => {
+//         state.isLoading = false;
+//         state.isSuccess = false;
+//         state.isError = true;
+//         state.message = action.payload;
+//       })
+//       // Read all invoice records
+//       .addCase(getAllInvoices.pending, (state) => {
+//         state.isLoading = true;
+//         state.isSuccess = false;
+//         state.isDelSuccess = false;
+//         state.isError = false;
+//         state.message = "";
+//       })
+//       .addCase(getAllInvoices.fulfilled, (state, action) => {
+//         state.isLoading = false;
+//         state.isSuccess = true;
+//         state.isError = false;
+//         state.message = "Got all records successfully!";
+//         state.invoicesList = action.payload;
+//       })
+//       .addCase(getAllInvoices.rejected, (state, action) => {
+//         state.isLoading = false;
+//         state.isSuccess = false;
+//         state.isError = true;
+//         state.message = action.payload;
+//       })
+//       // search invoice records by users
+//       .addCase(searchInvoices.pending, (state) => {
+//         state.isLoading = true;
+//         state.isSuccess = false;
+//         state.isDelSuccess = false;
+//         state.isError = false;
+//         state.message = "";
+//       })
+//       .addCase(searchInvoices.fulfilled, (state, action) => {
+//         state.isLoading = false;
+//         state.isSuccess = true;
+//         state.isError = false;
+//         state.message = "Got search successfully!";
+//         state.invoicesList = action.payload;
+//       })
+//       .addCase(searchInvoices.rejected, (state, action) => {
+//         state.isLoading = false;
+//         state.isSuccess = false;
+//         state.isError = true;
+//         state.message = action.payload;
+//       })
+//       // Delete invoice record
+//       .addCase(deleteInvoice.pending, (state) => {
+//         state.isLoading = true;
+//         state.isDelSuccess = false;
+//         state.isSuccess = false;
+//         state.isError = false;
+//         state.message = "";
+//       })
+//       .addCase(deleteInvoice.fulfilled, (state, action) => {
+//         state.isLoading = false;
+//         state.isDelSuccess = true;
+//         state.isError = false;
+//         state.message = "Record deleted successfully!";
+//       })
+//       .addCase(deleteInvoice.rejected, (state, action) => {
+//         state.isLoading = false;
+//         state.isDelSuccess = false;
+//         state.isSuccess = false;
+//         state.isError = true;
+//         state.message = "Record deletion failed";
+//       });
+//   },
+// });
 
 // Action creators are generated for each case reducer function
 // Changes
-export const { addToCart, removeFromCart, removeAllFromCart, reset } =
+export const { addToCart, removeFromCart, removeAllFromCart, incrementQuantity, decrementQuantity, updateCart, reset, } =
   invoicesSlice.actions;
 
 export default invoicesSlice.reducer;

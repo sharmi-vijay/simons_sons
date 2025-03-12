@@ -9,33 +9,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Typewriter from "typewriter-effect";
 function Login() {
- 
-  const styles = {
-    fieldset: {
-      color: "white",
-      border: '2px solid #ccc',
-      padding: '20px',
-      borderRadius: '5px',
-      maxWidth: '750px',
-      margin: '0 auto',
-      marginTop: "120px",
-      backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRJC5a7kxx56jLS2ga29pI5wBvt-1FPzsiW8KREScaVv34wP-gZZkBxO4qOO4r6D0J4a4&usqp=CAU')`,
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "cover"
-    },
-    background :{
-      backgroundColor: "darkSlateGray", 
-      padding: '20px',
-      outerHeight: '20em',
-      flexDirection: "row",
-      height: "95vh"
-    },
-  };
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const { isSuccess, isError, message } = useSelector((state) => state.users);
+  const { isLoggedIn, isSuccess, isError, message } = useSelector((state) => state.users);
 
   const [credentials, setCredentials] = useState({
     email: "",
@@ -50,38 +28,153 @@ function Login() {
     });
   };
 
-  const logInBtn = (e) => {
+  const logInBtn = async (e) => {
     e.preventDefault();
-    dispatch(logIn(credentials));
+    try {
+      const actionResult = await dispatch(logIn(credentials)).unwrap();
+      
+      if (actionResult.success) { // Check if the login was successful
+        toast.success("Logged In Successfully!");
+        navigate("/"); // Navigate to homepage after successful login
+      } else {
+        toast.error("Login failed!");
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    }
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
-      toast.success("Logged In Successfully!")
-    }
-    
-    if (isError) {
-      toast.error(message);
-    }
-  }, [isSuccess, isError, message]);
+
+  // const logInBtn = (e) => {
+  //   e.preventDefault();
+  //   dispatch(logIn(credentials));
+  // };
+
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     toast.success("Logged In Successfully!");
+  //     setTimeout(() => {
+  //       navigate("/"); // Navigate to homepage after successful login
+  //     }, 1000);
+  //   }
+
+  //   if (isError) {
+  //     toast.error(message); // Show error message if login failed
+  //   }
+  // }, [isSuccess, isError, message, navigate]);
 
   return (
-    <div style={styles.background}>
-    <Container>
+    <div>
+      <style>
+  {`
+    .container {
+      max-width: 550px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color:rgb(242, 243, 244);
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-control {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 200%;
+    }
+
+    .form-control:hover {
+      border: 2px solid black; /* Light blue background on hover */
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .button-container {
+      text-align: center;
+    }
+
+    .register-button {
+      background-color: black;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+
+    .register-button:hover {
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+      transform: scale(1.05);
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .register-button {
+        padding: 8px 15px;
+        font-size: 14px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      h1 {
+        font-size: 18px;
+      }
+
+      .form-label {
+        font-size: 14px;
+      }
+
+      .form-control {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      .register-button {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+    }
+  `}
+</style>
       
-    <fieldset style={styles.fieldset}>
+    <Container>
+    <fieldset>
       <legend><h1><Typewriter 
             onInit={(typewriter) => {
               typewriter.typeString("Login")
-              .pauseFor(2000)
+              .pauseFor(1000)
               .start();
             }}
          /></h1></legend>
          
       <Form onSubmit={logInBtn}>
         <Form.Group as={Col} md={4} className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             name="email"
@@ -90,9 +183,6 @@ function Login() {
             placeholder="Enter your Email"
             required
           />
-          {/* <Form.Text className="text-muted" style={{color: "white"}}>
-            <h6 style={{color: "whitesmoke"}}>We'll never share your email with anyone.</h6>
-          </Form.Text> */}
         </Form.Group>
 
         <Form.Group
@@ -112,12 +202,13 @@ function Login() {
           />
         </Form.Group>
         <div className="d-flex gap-2">
-          <Button variant="primary" type="submit">
+          <Button className="register-button" type="submit">
             Login
           </Button>
-          <Button variant="secondary" type="submit">
+              <Button type="submit">
+        
           <NavLink to={"/signup"}>
-            <h6 style={{color:"white"}}>Haven't account yet? Register yourself!</h6>
+                  <h6 style={{ color: "white", margin: "auto" }} >Haven't account yet? Register yourself!</h6>
           </NavLink>
           </Button>
         </div>

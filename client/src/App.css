@@ -7,3 +7,9 @@ body {
   scroll-behavior: smooth;
   
 }
+
+@media print {
+  .header-buttons {
+    display: none !important;
+  }
+}

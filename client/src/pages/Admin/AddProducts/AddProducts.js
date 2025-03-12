@@ -16,32 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function AddProducts() {
-
-  const [users, setUsers] = useState([]);
-
-  const userData = async() =>{
-    try {
-    const response = await fetch('/api/users',{
-      headers :{
-        'Accept': "application/json"
-      }
-    });
-    if (!response.ok) {
-      throw new Error('Failed to fetch users');
-    }
-    const contentType = response.headers.get('content-type');
-    if(contentType && contentType.includes('application/json')){ 
-           const data = await response.json();
-      setUsers(data);
-    }else{
-      throw new Error('Response is not JSON');
-    }
-  } catch (error) {
-    console.error(error.message);
-    // Handle error (e.g., show error message to user)
-  }
-  };
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.users.credentials.token);
@@ -55,6 +29,9 @@ function AddProducts() {
     price: "",
     image: "",
     category: "",
+    description: "",
+    reviews: [],  // Array of reviews (if needed in frontend)
+    averageRating: 0, // Default rating
   };
 
   const [product, setProduct] = useState(productTemplate);
@@ -123,22 +100,18 @@ function AddProducts() {
         <Form onSubmit={isUpdate ? updateProductBtn : addProductBtn}>
           <Row>
             <Col md={4}>
-              <Form.Group as={Col} className="mb-3" controlId="formBasicEmail">
+              <Form.Group as={Col} className="mb-3">
                 <Form.Control
                   type="text"
                   name="name"
                   value={product.name}
                   onChange={handleChange}
-                  placeholder="Name"
+                  placeholder="Product Name"
                   required
                 />
               </Form.Group>
 
-              <Form.Group
-                as={Col}
-                className="mb-3"
-                controlId="formBasicPassword"
-              >
+              <Form.Group as={Col} className="mb-3">
                 <Form.Control
                   type="text"
                   name="brand"
@@ -149,13 +122,9 @@ function AddProducts() {
                 />
               </Form.Group>
 
-              <Form.Group
-                as={Col}
-                className="mb-3"
-                controlId="formBasicPassword"
-              >
+              <Form.Group as={Col} className="mb-3">
                 <Form.Control
-                  type="text"
+                  type="number"
                   name="price"
                   value={product.price}
                   onChange={handleChange}
@@ -164,16 +133,24 @@ function AddProducts() {
                 />
               </Form.Group>
 
-              <Form.Group
-                as={Col}
-                className="mb-3"
-                controlId="validationCustom01"
-              >
+              <Form.Group as={Col} className="mb-3">
+                <Form.Control
+                  as="textarea"
+                  name="description"
+                  value={product.description}
+                  onChange={handleChange}
+                  placeholder="Product Description"
+                  required
+                  rows={3}
+                />
+              </Form.Group>
+
+              <Form.Group as={Col} className="mb-3">
                 <Form.Select
                   name="category"
                   value={product.category}
                   onChange={handleChange}
-                  aria-label="Default select example"
+                  aria-label="Select Category"
                 >
                   <option hidden>Category</option>
                   {productsCategory.map((category, id) => (
@@ -209,46 +186,31 @@ function AddProducts() {
                   width: "100%",
                 }}
               >
-                {product.image ? (
-                  <>
-                    <img
-                      src={product.image}
-                      style={{ height: "180px", width: "100%" }}
-                    />
-                  </>
-                ) : (
-                  <></>
+                {product.image && (
+                  <img
+                    src={product.image}
+                    alt="Product"
+                    style={{ height: "180px", width: "100%" }}
+                  />
                 )}
               </figure>
             </Col>
           </Row>
           <Button variant="primary" type="submit">
             {isUpdate ? "Update" : "Add"} Product
-          </Button>{" "}
+          </Button>
         </Form>
-
-        {/* <div>  
-        <Button variant="secondary" onClick={userData}></Button>
-          <ul>
-            {users.map(user => (
-              <li key = {user._id}>{user.fullName} - {user.phone} - {user.address} - {user.email}</li>
-            ))}
-          </ul>
-        </div> */}
-
 
         <div className="d-flex align-items-center gap-4">
           <h1 className="my-4">Product List</h1>
-          <div>
-            <Button
-              type="button"
-              variant="success"
-              size="sm"
-              onClick={() => dispatch(getAllProducts(token))}
-            >
-              <i className="fa-solid fa-arrows-rotate"/>
-            </Button>
-          </div>
+          <Button
+            type="button"
+            variant="success"
+            size="sm"
+            onClick={() => dispatch(getAllProducts(token))}
+          >
+            <i className="fa-solid fa-arrows-rotate" />
+          </Button>
         </div>
         <ProductList accessFrom="admin" />
       </Container>

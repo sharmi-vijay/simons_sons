@@ -1,25 +1,32 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
-const initialState = {
-  productList: [],
-  productsCategory: [
-    "Mobile",
-    "Laptops & Computers",
-    "Home Electronics",
-  ],
-  singleProduct: null,
-  isUpdate: false,
-  isLoading: false,
-  isSuccess: false,
-  isError: false,
-  message: "",
-};
+// const initialState = {
+//   productList: [],
+//   wishlist: [],
+//   productsCategory: [
+//     "Paper Items",
+//     "Writing Accessories",
+//     "Desktop Items",
+//   ],
+//   singleProduct: null,
+//   isUpdate: false,
+//   isLoading: false,
+//   isSuccess: false,
+//   isError: false,
+//   message: "",
+// };
 
 // JWT Token
-const token = localStorage.getItem("credentials") 
+const token = localStorage.getItem("credentials")
   ? JSON.parse(localStorage.getItem("credentials")).token
   : "";
+
+//  WISHLIST LOCAL STORAGE
+const saveWishlistToLocalStorage = (wishlist) => {
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+};
 
 // CREATE
 export const addProduct = createAsyncThunk(
@@ -103,11 +110,76 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+// FETCH PRODUCT DETAILS (INCLUDING REVIEWS)
+export const getProductDetails = createAsyncThunk(
+  "products/getProductDetails",
+  async (id, { rejectWithValue }) => {
+    if (!id) {
+      return rejectWithValue("Product ID is missing!");
+    }
+    try {
+      const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Error fetching product details");
+    }
+  }
+);
+
+
+// SUBMIT A REVIEW
+export const addReview = createAsyncThunk(
+  "products/addReview",
+  async ({ reviewData, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/products/${reviewData.productId}/reviews`,
+        reviewData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Error adding review");
+    }
+  }
+);
+
 export const productsSlice = createSlice({
-  name: "users",
-  initialState,
+  name: "products",
+  initialState: {
+    productList: [],
+    productDetails: {},
+    wishlist: JSON.parse(localStorage.getItem("wishlist")) || [],
+    productsCategory: ["Paper Items", "Writing Accessories", "Desktop Items"],
+    singleProduct: null,
+    isUpdate: false,
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: "",
+  },
   reducers: {
-    // Changes
+    setWishlist: (state, action) => {
+      state.wishlist = action.payload;
+    },
+    addToWishlist: (state, action) => {
+      const product = action.payload;
+      if (!state.wishlist.some((item) => item._id === product._id)) {
+        state.wishlist.push(product);
+        saveWishlistToLocalStorage(state.wishlist);
+      }
+    },
+    removeFromWishlist: (state, action) => {
+      const productId = action.payload;
+      state.wishlist = state.wishlist.filter((item) => item._id !== productId);
+      saveWishlistToLocalStorage(state.wishlist);
+    },
+    clearWishlist: (state) => {
+      state.wishlist = [];
+      saveWishlistToLocalStorage(state.wishlist);
+    },
     setDatatoForm: (state, action) => {
       state.singleProduct = action.payload;
       state.isUpdate = true;
@@ -126,89 +198,95 @@ export const productsSlice = createSlice({
       // Add Product
       .addCase(addProduct.pending, (state) => {
         state.isLoading = true;
-        state.isSuccess = false;
-        state.isError = false;
-        state.message = "";
       })
-      .addCase(addProduct.fulfilled, (state, action) => {
+      .addCase(addProduct.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.isError = false;
-        state.message = "Product added successfully!";
+        toast.success("Product added successfully!");
       })
       .addCase(addProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
       })
       // Read all products
       .addCase(getAllProducts.pending, (state) => {
         state.isLoading = true;
-        state.isUpdate = false;
-        state.isSuccess = false;
-        state.isError = false;
-        state.message = "";
       })
       .addCase(getAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.isUpdate = false;
-        state.isError = false;
-        state.message = "Product added successfully!";
         state.productList = action.payload;
       })
       .addCase(getAllProducts.rejected, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
       })
       // Delete Product
       .addCase(deleteProduct.pending, (state) => {
         state.isLoading = true;
-        state.isSuccess = false;
-        state.isError = false;
-        state.message = "";
       })
-      .addCase(deleteProduct.fulfilled, (state, action) => {
+      .addCase(deleteProduct.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.isError = false;
-        state.message = "Product deleted successfully!";
+        toast.success("Product deleted successfully!");
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = false;
         state.isError = true;
         state.message = "Product deletion failed";
       })
       // Update Product
       .addCase(updateProduct.pending, (state) => {
         state.isLoading = true;
-        state.isSuccess = false;
-        state.isError = false;
-        state.message = "";
       })
-      .addCase(updateProduct.fulfilled, (state, action) => {
+      .addCase(updateProduct.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.isError = false;
         state.isUpdate = true;
         state.singleProduct = null;
-        state.message = "Product Updated successfully!";
+        toast.success("Product updated successfully!");
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // Fetch Product Details
+      .addCase(getProductDetails.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProductDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.productDetails = action.payload;
+      })
+      .addCase(getProductDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // Add Review
+      .addCase(addReview.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addReview.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.productDetails.reviews.push(action.payload);
+        toast.success("Review added successfully!");
+      })
+      .addCase(addReview.rejected, (state, action) => {
+        state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       });
   },
 });
 
+
 // Action creators are generated for each case reducer function
 // Changes
-export const { reset, setDatatoForm } = productsSlice.actions;
+export const { reset, setDatatoForm, addToWishlist, removeFromWishlist, clearWishlist, setWishlist } = productsSlice.actions;
 
 export default productsSlice.reducer;

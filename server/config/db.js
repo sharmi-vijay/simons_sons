@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const express = require('express')
-const router = express.Router();
+
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
@@ -25,6 +24,8 @@ const connectDB = async () => {
 //   }
 // });
 
-module.exports = router;
 
 module.exports = connectDB;
+
+
+

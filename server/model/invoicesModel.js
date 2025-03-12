@@ -6,7 +6,8 @@ const invoicesModel = mongoose.Schema({
     phone: {type:String},
     email: {type:String},
     address: {type:String},
-    products: {type: Array},
+    products: { type: Array },
+    // quantity:{type: String},
     date: {type: String},
     deliveryDate: {type: String},
     totalCost: {type:String}

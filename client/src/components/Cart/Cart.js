@@ -10,9 +10,11 @@ import {
   removeAllFromCart,
 } from "../../features/invoices/invoicesSlice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const dispatch = useDispatch();
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -38,8 +40,13 @@ function Cart() {
     };
   };
 
+  const navigate = useNavigate();
+
   const user = useSelector((state) => state.users.credentials);
   const { productsCart, totalCost } = useSelector((state) => state.invoices);
+
+  // // TOTAL COST
+  // const totalCost = productsCart.reduce((total, product) => total + product.price * product.quantity, 0);
 
   const generateInvoice = () => {
     const invoiceData = {
@@ -47,7 +54,7 @@ function Cart() {
       customerName: user.fullName,
       phone: user.phone,
       email: user.email,
-      address: user.address,
+      // address: user.address,
       products: productsCart,
       date: getDates().date,
       deliveryDate: getDates().deliveryDate,
@@ -60,13 +67,34 @@ function Cart() {
       dispatch(createInvoice(invoiceData));
       dispatch(removeAllFromCart());
       toast.success("Product Added Successfully!");
+
+      handleClose();
+      navigate("/invoices");
     }
-    handleClose();
+
   };
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button
+        style=
+        {{
+          backgroundColor: 'black',
+          border: 'none',
+          borderRadius: '5px',
+          color: 'white',
+          padding: '5px 15px',
+          alignItems: 'center',
+          textAlign: 'center',
+          textDecoration: 'none',
+          display: 'inline-block',
+          fontSize: '16px',
+          fontWeight: 'bolder',
+          margin: '2px 2px',
+          transition: 'all 0.4s ease',
+          cursor: 'pointer'
+        }}
+        onClick={handleShow}>
         <i className="fa-solid fa-cart-shopping" />
       </Button>
 
@@ -74,7 +102,7 @@ function Cart() {
         show={show}
         onHide={handleClose}
         placement={"end"}
-        // style={{ maxheight: "400px", height: "fit-content" }}
+      // style={{ maxheight: "400px", height: "fit-content" }}
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
@@ -98,16 +126,33 @@ function Cart() {
                 <b>Email</b> {user.email}
               </div>
             </Row>
+
+            <Row>
+              <ul>
+                {productsCart.map((product, id) => (
+                  <li key={id}>
+                    {product.name} - Rs.{product.price} x {product.quantity} = Rs.
+                    {product.price * product.quantity}
+                  </li>
+                ))}
+              </ul>
+              <div>
+                <b>Total Cost:</b> Rs.{totalCost}
+              </div>
+            </Row>
+
             <Row className="mt-4">
               <h2>Product</h2>
               <div>
                 <b>Products:</b>
-                {productsCart.length == 0 ? (
+                {productsCart.length === 0 ? (
                   <p>No products in cart now</p>
                 ) : (
                   <ul>
                     {productsCart.map((product, id) => (
-                      <li key={id}>{product}</li>
+                      <li key={id}>
+                        <b>Name:</b> {product.name}, <b>Price:</b> {product.price}, <b>Quantity:</b> {product.quantity}
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -124,7 +169,36 @@ function Cart() {
             </Row>
             <Row className="mt-4">
               <div>
-                <Button type="button" onClick={() => generateInvoice()}>
+                <Button
+                  style=
+                  {{
+                    backgroundColor: 'black',
+                    border: 'none',
+                    // borderRadius: '30px',
+                    color: 'white',
+                    padding: '5px 15px',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    fontSize: '16px',
+                    fontWeight: 'bolder',
+                    margin: '2px 2px',
+                    transition: 'all 0.4s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.backgroundColor = 'white';
+                    e.target.style.color = 'black';
+                    e.target.style.border = '2px solid black';
+                    e.target.style.transform = 'scale(1.05)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.backgroundColor = 'black';
+                    e.target.style.color = 'white';
+                    e.target.style.transform = 'scale(1)';
+                  }}
+                  type="button" onClick={() => generateInvoice()}>
                   Generate CartList
                 </Button>
               </div>
